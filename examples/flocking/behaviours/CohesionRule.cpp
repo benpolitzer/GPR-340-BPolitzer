@@ -3,23 +3,40 @@
 
 Vector2f CohesionRule::computeForce(const std::vector<Boid*>& neighborhood, Boid* boid) {
   // Try to avoid boids too close
-  Vector2f separatingForce = Vector2f::zero();
+  Vector2f cohesionForce;
+  
+  // If there are boids in the neighborhood, compute the cohesive force
   if (!neighborhood.empty()) {
     for (auto i : neighborhood) {
-      // Ignore itself
+      // Ignore the current boid
       if (i->getPosition().x == boid->getPosition().x && i->getPosition().y == boid->getPosition().y) {
         continue;
       }
-
-      Vector2f dir = {i->getPosition().x - boid->getPosition().x , i->getPosition().y - boid->getPosition().y};
+      
+      // Calculate the direction vector from the current boid to the neighbor boid
+      Vector2f dir = {i->getPosition().x - boid->getPosition().x , 
+          i->getPosition().y - boid->getPosition().y};
+      
+      // Compute the Euclidean distance between the two boids
       float dist = sqrt(dir.x * dir.x + dir.y * dir.y);
+      // Don't influence boids that are within a certain distance from the current boid
       if (1.0f >= dist) {
         continue;
       }
-      Vector2f hat = {dir.x / dist, dir.y / dist};
+
+      // Normalize the direction vector to get the unit vector
+      Vector2f unit = {dir.x / dist, dir.y / dist};
+
+      // Computes the cohesive force strength which is inversely proportional to the distance
+      float strength = 1.5 / dist;
+      
+      // Accumulate the weighted cohesive force in the respective direction
+      cohesionForce.x += unit.x * strength;
+      cohesionForce.y += unit.y * strength;
     }
   }
-  separatingForce = Vector2f::normalized(separatingForce);
+  // Normalize the accumulated cohesive force to make sure it has a unit magnitude
+  cohesionForce = Vector2f::normalized(cohesionForce);
 
-  return separatingForce;
+  return cohesionForce;
 }
