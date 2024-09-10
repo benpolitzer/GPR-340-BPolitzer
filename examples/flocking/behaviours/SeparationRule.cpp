@@ -26,7 +26,7 @@ Vector2f SeparationRule::computeForce(const std::vector<Boid*>& neighborhood, Bo
       float dist = sqrt(dir.x * dir.x + dir.y * dir.y);
 
       // Skip this neighbor if it's within the desired minimal distance
-      if (desiredMinimalDistance >= dist) {
+      if (desiredMinimalDistance <= dist) {
         continue;
       }
 
@@ -34,7 +34,7 @@ Vector2f SeparationRule::computeForce(const std::vector<Boid*>& neighborhood, Bo
       Vector2f unit = {dir.x / dist, dir.y / dist};
 
       // Compute the separating force, inversely proportional to the distance
-      float strength = 1.5 / dist;
+      float strength = desiredMinimalDistance/dist;
 
       // Accumulate the weighted separating force in the respective direction
       separatingForce.x += unit.x * strength;
@@ -42,7 +42,7 @@ Vector2f SeparationRule::computeForce(const std::vector<Boid*>& neighborhood, Bo
     }
   }
   // Normalize the accumulated cohesive force to make sure it has a unit magnitude
-  separatingForce = Vector2f::normalized(separatingForce);
+  //separatingForce = Vector2f::normalized(separatingForce);
 
   return separatingForce;
 }

@@ -28,15 +28,16 @@ Vector2f CohesionRule::computeForce(const std::vector<Boid*>& neighborhood, Boid
       Vector2f unit = {dir.x / dist, dir.y / dist};
 
       // Computes the cohesive force strength which is inversely proportional to the distance
-      float strength = 1.5 / dist;
+      float strength = 1.0f;
       
       // Accumulate the weighted cohesive force in the respective direction
       cohesionForce.x += unit.x * strength;
       cohesionForce.y += unit.y * strength;
     }
-  }
-  // Normalize the accumulated cohesive force to make sure it has a unit magnitude
-  cohesionForce = Vector2f::normalized(cohesionForce);
+    // Normalize the accumulated cohesive force to make sure it has a unit magnitude
+    cohesionForce = Vector2f::normalized(cohesionForce);
 
-  return cohesionForce;
+    return cohesionForce;
+  }
+  return Vector2f::zero();
 }
