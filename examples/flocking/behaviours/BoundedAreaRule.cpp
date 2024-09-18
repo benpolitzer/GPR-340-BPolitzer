@@ -6,26 +6,25 @@
 Vector2f BoundedAreaRule::computeForce(const std::vector<Boid*>& neighborhood, Boid* boid) {
   Vector2f force = Vector2f::zero();
   auto windowSize = this->world->engine->window->size();
-  auto boidPos = boid->getPosition();  // Assuming getPosition() returns a Vector2f representing the boid's position
 
   // Calculate the distance to each edge
-  float leftDist = boidPos.x - desiredDistance;
-  float rightDist = (windowSize.x - boidPos.x) - desiredDistance;
-  float topDist = boidPos.y - desiredDistance;
-  float bottomDist = (windowSize.y - boidPos.y) - desiredDistance;
+  float leftDist = boid->getPosition().x - desiredDistance;
+  float rightDist = (windowSize.x - boid->getPosition().x) - desiredDistance;
+  float topDist = boid->getPosition().y - desiredDistance;
+  float bottomDist = (windowSize.y - boid->getPosition().y) - desiredDistance;
 
   // Calculate the force to apply based on distances
   if (leftDist < 0) {
-    force.x += -leftDist;  // Push towards the right if too close to the left
+    force.x -= leftDist;  // Push towards the right if too close to the left
   }
   if (rightDist < 0) {
-    force.x += -rightDist;  // Push towards the left if too close to the right
+    force.x += rightDist;  // Push towards the left if too close to the right
   }
   if (topDist < 0) {
-    force.y += -topDist;  // Push towards the bottom if too close to the top
+    force.y -= topDist;  // Push towards the bottom if too close to the top
   }
   if (bottomDist < 0) {
-    force.y += -bottomDist;  // Push towards the top if too close to the bottom
+    force.y += bottomDist;  // Push towards the top if too close to the bottom
   }
 
   return force;
