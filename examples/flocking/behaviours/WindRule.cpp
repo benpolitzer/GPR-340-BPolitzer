@@ -6,7 +6,8 @@
 
 Vector2f WindRule::computeForce(const std::vector<Boid*>& neighborhood, Boid* boid) {
 
-  return Vector2f::Vector2(std::cos(windAngle), std::sin(windAngle));
+    //Returns a new Vec2 where the cosine of the windAngle is the x and the sine is the y
+    return Vector2f::Vector2(std::cos(windAngle), std::sin(windAngle));
 }
 
 bool WindRule::drawImguiRuleExtra() {

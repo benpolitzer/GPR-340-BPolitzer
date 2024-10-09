@@ -26,7 +26,7 @@ public:
   Color32 color;  // todo: make this private
 
   // Constructor
-  explicit Particle(Engine* pEngine, float size = 4.f, Color32 color = Color32::RandomColor(25, 255));
+  explicit Particle(Engine* pEngine, float size = 4.f, Color32 color = Color32::RandomColor(255, 255));
 
   // Getter / Setters
   Transform getTransform() const { return transform; }
